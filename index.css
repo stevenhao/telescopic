@@ -1,0 +1,25 @@
+.nav {
+  display: none; /* not ready yet */
+}
+body {
+  background-image: linear-gradient(to bottom,#d7d7d7 0%,#eeeeee 116px);
+}
+
+span {
+  font-size: 30px;
+  line-height: 50px;
+}
+
+span.collapsible:hover {
+  background-color: #BBB;
+}
+
+span.collapsible {
+  background-color: #DDD;
+  cursor: pointer;
+}
+
+span.expandable {
+  background-color: white;
+  cursor: pointer;
+}
