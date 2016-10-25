@@ -1,3 +1,6 @@
+/*
+ * an overloaded constructor for InputTreeNode
+ */
 function c(text, level, ch) {
   if (level === undefined || typeof(level) == "object") {
     ch = level;
@@ -14,6 +17,7 @@ function c(text, level, ch) {
   }
 }
 
+// a list of paragraphs. a paragraph is a list of InputTreeNodes
 var unixText =
 [
   [

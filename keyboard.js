@@ -1,15 +1,19 @@
 /*
- ctrl = m.prop(0);
- keys = {
-  CtrlKey: ctrl,
- };
+  usage:
+  ctrlProp = m.prop(0);
+  keyboard = Keyboard({ CtrlKey: ctrlProp })
+  options = {
+    onkeyup: keyboard.up,
+    onkeydown: keyboard.down,
+  }
  */
+
 Keyboard = function(keys) {
   var that = {};
-  function make(val) {
+  function make(val) { // make a event handler bound to val
     return function(ev) {
       if (ev.key in keys) {
-        keys[ev.key](val);
+        keys[ev.key](val); // call the callback
       }
     };
   }

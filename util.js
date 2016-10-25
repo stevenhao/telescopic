@@ -18,6 +18,10 @@ var U = {
     ev.preventDefault();
     ev.stopPropagation();
   },
+
+  /*
+   * returns [ar[0], sep, ar[1], sep, ..., sep, ar[ar.length-1]]
+   * */
   leave: function(sep, ar) {
     var ret = [];
     ar.forEach(function(el) {
@@ -27,9 +31,11 @@ var U = {
     ret.pop();
     return ret;
   },
+
   isobj: function(obj) {
     return typeof(obj) === 'object';
   },
+
   rot13: function(s) {
     return s.split('').map(function(ch) {
       if (ch == ' ') return ch;
