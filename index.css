@@ -4,6 +4,9 @@
 body {
   background-image: linear-gradient(to bottom,#d7d7d7 0%,#eeeeee 116px);
 }
+.root {
+  outline: none;
+}
 
 span {
   font-size: 30px;
@@ -11,15 +14,19 @@ span {
 }
 
 span.collapsible:hover {
-  background-color: #BBB;
+  background-color: #999;
 }
 
 span.collapsible {
-  background-color: #DDD;
+  background-color: #BBB;
   cursor: pointer;
 }
 
+span.expandable:hover {
+  background-color: #DDD;
+}
+
 span.expandable {
-  background-color: white;
+  background-color: #FFF;
   cursor: pointer;
 }
