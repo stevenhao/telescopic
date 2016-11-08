@@ -113,8 +113,8 @@ var Read = {
   },
 
   controller: function() {
-    //var text = unixText;
-    var text = testText;
+    var text = unixText;
+    //var text = testText;
     var vm = new Read.viewmodel(text);
     var backtracking = m.prop(false);
 
