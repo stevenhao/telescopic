@@ -1,22 +1,3 @@
-/*
- * an overloaded constructor for InputTreeNode
- */
-function c(text, level, ch) {
-  if (level === undefined || typeof(level) == "object") {
-    ch = level;
-    level = 1;
-  }
-
-  if (typeof(text) == "string") {
-    text = [text];
-  }
-  return {
-    text: text,
-    level: level,
-    children: ch,
-  }
-}
-
 // a list of paragraphs. a paragraph is a list of InputTreeNodes
 var unixText =
 [

@@ -1,10 +1,3 @@
-function c(text, ch) {
-  return {
-    text: text,
-    children: ch,
-  }
-}
-
 var dumbText = [
   c("A", [
   ]),

@@ -17,11 +17,12 @@ var Read = {
         text: node.text, // list of strings -- the different ways the node can be displayed
         level: node.level, // how many times you need to click cur's parent for cur to appear
         expanded: 0, // how many times you have clicked cur
+        left: node.left,
       };
       nodes.push(cur);
 
       if (cur.text.length > 1 || node.children && node.children.length) {
-        cur.children = (node.children || []).map(dfs1); // recurse on children, store their ids in cur.children
+        cur.children = (node.children).map(dfs1); // recurse on children, store their ids in cur.children
         cur.levels = U.max(cur.children.map(function(ch) {
           return nodes[ch].level + 1;
         }).concat(cur.text.length)); // levels is the maximum of your childrens' level.
@@ -61,7 +62,12 @@ var Read = {
         if (!nodes[idx].leaf) {
           cur.levels = nodes[idx].levels;
           // children: a list of TreeNodes -- computed by recursively calling dfs2 on the children
-          cur.children = nodes[idx].children.map(dfs2);
+          cur.leftChildren = nodes[idx].children.filter(function(nidx) {
+            return nodes[nidx].left;
+          }).map(dfs2);
+          cur.rightChildren = nodes[idx].children.filter(function(nidx) {
+            return !nodes[nidx].left;
+          }).map(dfs2);
         }
         return cur;
       }
@@ -76,7 +82,6 @@ var Read = {
 
     // handle opening/closing paragraphs
     this.nextParagraph = function(backwards) {
-      console.log('nextParagraph', backwards);
       if (backwards) { // hide the last paragraph, if any
         numParagraphsExpanded--;
         if (numParagraphsExpanded < 0) {
@@ -108,7 +113,9 @@ var Read = {
   },
 
   controller: function() {
-    var vm = new Read.viewmodel(unixText);
+    //var text = unixText;
+    var text = testText;
+    var vm = new Read.viewmodel(text);
     var backtracking = m.prop(false);
 
     this.backtracking = backtracking;
@@ -164,21 +171,25 @@ var Read = {
         var expandable = !backtracking && node.expanded + 1 < node.levels;
         var collapsible = ( !backtracking && node.expanded + 1 == node.levels ||
             backtracking && node.expanded - 1 >= 0);
+        var leftChildren = node.leftChildren.filter(function(ch) {
+            return ch.level <= node.expanded;
+        });
+        var rightChildren = node.rightChildren.filter(function(ch) {
+            return ch.level <= node.expanded;
+        });
         return m('span.group', [
-          m('span.group-text', U.leave(sep, [ // [node's text element]
-            m('span.t-node',
-              {
-                onclick: ctrl.toggleNode.bind(null, node.id, backtracking), // call toggleNode on click
+          m('span.group-text', U.leave(sep,
+            leftChildren.map(draw).concat( [ // [node's text element]
+              m('span.t-node', {
+                onclick: ctrl.toggleNode.bind(null, node.id, backtracking),
+                // call toggleNode on click
                 onmousedown: U.consume, // prevent double-clicking
                 className: [
                   collapsible ? 'collapsible' : '',
                   expandable ? 'expandable' : '',
                 ].join(' '),
-              },
-              text),
-          ].concat(node.children.filter(function(ch) { // [node's visible children's text elements]
-            return ch.level <= node.expanded;
-          }).map(draw)))),
+              }, text),
+          ]).concat(rightChildren.map(draw)))),
         ]);
       }
     }
