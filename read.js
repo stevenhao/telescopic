@@ -207,6 +207,12 @@ var Read = {
                   onchange: (idx) => {
                     ctrl.activeSlider(node.id);
                     ctrl.setNode(node.id, idx);
+                    setTimeout(
+                      () => {
+                        ctrl.activeSlider(null);
+                        m.redraw(true);
+                      }
+                    , 2000);
                   },
                 }) : null,
                 m('span.t-node', {
