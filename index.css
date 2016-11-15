@@ -1,6 +1,3 @@
-.nav {
-  display: none; /* not ready yet */
-}
 body {
   background-image: linear-gradient(to bottom,#d7d7d7 0%,#eeeeee 116px);
 }
@@ -55,12 +52,12 @@ span.expandable {
 
 .slider-big-dot {
   position: absolute;
-  background-color: black;
+  background-color: gray;
   z-index: 0;
 }
 
 .slider-big-dot.hot {
-  background-color: red;
+  background-color: black;
 }
 .slider-drag {
   width: 100%;
