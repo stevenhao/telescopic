@@ -21,7 +21,7 @@ function c(text, level, leftCh, rightCh) {
   rightCh.forEach(function(obj) {
     obj.left = false;
   });
-  if (typeof(text) == "string") {
+  if (typeof(text) == "string" || text.$trusted) {
     text = [text];
   }
   return {
