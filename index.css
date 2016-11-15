@@ -14,20 +14,56 @@ span {
   line-height: 50px;
 }
 
-span.collapsible:hover {
-  background-color: #999;
-}
-
 span.collapsible {
-  background-color: #BBB;
-  cursor: pointer;
-}
-
-span.expandable:hover {
   background-color: #DDD;
+  cursor: pointer;
 }
 
 span.expandable {
   background-color: #FFF;
   cursor: pointer;
+}
+
+.group-leader {
+  position: relative;
+}
+
+.slider-container {
+  position: absolute;
+  left: 0px;
+  top: -15px;
+  width: 100%;
+}
+
+.slider:hover, .group-leader:hover .slider, .group-leader.active .slider {
+  opacity: 1;
+}
+
+.slider {
+  opacity: 0;
+  position: relative;
+  z-index: 1;
+  padding-bottom: 5px;
+  width: 100%;
+}
+
+.slider-dot {
+  position: absolute;
+  background-color: gray;
+  z-index: 0;
+}
+
+.slider-big-dot {
+  position: absolute;
+  background-color: black;
+  z-index: 0;
+}
+
+.slider-big-dot.hot {
+  background-color: red;
+}
+.slider-drag {
+  width: 100%;
+  height: 100%;
+  z-index: 1000;
 }

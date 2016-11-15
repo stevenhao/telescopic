@@ -110,6 +110,14 @@ var Read = {
         }
       }
     };
+
+    this.getNode = function(id) {
+      return nodes[id];
+    };
+
+    this.setNode = function(id, expanded) {
+      nodes[id].expanded = expanded;
+    };
   },
 
   controller: function() {
@@ -117,8 +125,10 @@ var Read = {
     //var text = testText;
     var vm = new Read.viewmodel(text);
     var backtracking = m.prop(false);
+    var activeSlider = m.prop(null);
 
     this.backtracking = backtracking;
+    this.activeSlider = activeSlider;
 
     this.vm = vm;
 
@@ -128,6 +138,14 @@ var Read = {
      * */
     this.toggleNode = function(id, backwards) {
       vm.toggleNode(id, backwards);
+    };
+
+    this.getNode = function(id) {
+      return vm.getNode(id);
+    };
+
+    this.setNode = function(id, expanded) {
+      vm.setNode(id, expanded);
     };
 
     /* called when user clicks a node
@@ -170,26 +188,38 @@ var Read = {
       } else {
         var expandable = !backtracking && node.expanded + 1 < node.levels;
         var collapsible = ( !backtracking && node.expanded + 1 == node.levels ||
-            backtracking && node.expanded - 1 >= 0);
+          backtracking && node.expanded - 1 >= 0);
         var leftChildren = node.leftChildren.filter(function(ch) {
-            return ch.level <= node.expanded;
+          return ch.level <= node.expanded;
         });
         var rightChildren = node.rightChildren.filter(function(ch) {
-            return ch.level <= node.expanded;
+          return ch.level <= node.expanded;
         });
         return m('span.group', [
           m('span.group-text', U.leave(sep,
             leftChildren.map(draw).concat( [ // [node's text element]
-              m('span.t-node', {
-                onclick: ctrl.toggleNode.bind(null, node.id, backtracking),
-                // call toggleNode on click
-                onmousedown: U.consume, // prevent double-clicking
-                className: [
-                  collapsible ? 'collapsible' : '',
-                  expandable ? 'expandable' : '',
-                ].join(' '),
-              }, text),
-          ]).concat(rightChildren.map(draw)))),
+              m('span.group-leader', {
+                className: ctrl.activeSlider() === node.id ? 'active' : '',
+              }, [
+                !node.isroot ? m.component(Slider, {
+                  size: () => ctrl.getNode(node.id).levels,
+                  current: () => ctrl.getNode(node.id).expanded,
+                  onchange: (idx) => {
+                    ctrl.activeSlider(node.id);
+                    ctrl.setNode(node.id, idx);
+                  },
+                }) : null,
+                m('span.t-node', {
+                  onclick: ctrl.toggleNode.bind(null, node.id, backtracking),
+                  // call toggleNode on click
+                  onmousedown: U.consume, // prevent double-clicking
+                  className: [
+                    collapsible ? 'collapsible' : '',
+                    expandable ? 'expandable' : '',
+                  ].join(' '),
+                }, text),
+              ]),
+            ]).concat(rightChildren.map(draw)))),
         ]);
       }
     }
